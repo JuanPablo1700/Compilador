@@ -5,7 +5,9 @@
  */
 package compilador;
 
+
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -15,106 +17,15 @@ import javax.swing.table.DefaultTableModel;
 public class Compilador extends javax.swing.JFrame {
 
     NumeroLinea numeroLinea;
+    ArrayList<Token> lista_token = new ArrayList();
     
     public Compilador() {
         initComponents();
         numeroLinea = new NumeroLinea(ta_Codigo);
-        jScrollPane1.setRowHeaderView(numeroLinea);
+        jScrollPane1.setRowHeaderView(numeroLinea); 
     }
 
-    public void TablaSimbolos(){
-        Object[] arraySimbolos = new Object[108];
-        arraySimbolos[0] = "a";
-        arraySimbolos[1] = "";
-        arraySimbolos[2] = "";
-        arraySimbolos[3] = "";
-        arraySimbolos[4] = "";
-        arraySimbolos[5] = "";
-        arraySimbolos[6] = "";
-        arraySimbolos[7] = "";
-        arraySimbolos[8] = "";
-        arraySimbolos[9] = "";
-        arraySimbolos[10] = "";
-        arraySimbolos[11] = "";
-        arraySimbolos[12] = "";
-        arraySimbolos[13] = "";
-        arraySimbolos[14] = "";
-        arraySimbolos[15] = "";
-        arraySimbolos[16] = "";
-        arraySimbolos[17] = "";
-        arraySimbolos[18] = "";
-        arraySimbolos[19] = "";
-        arraySimbolos[20] = "";
-        arraySimbolos[21] = "";
-        arraySimbolos[22] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-//        arraySimbolos[] = "";
-
-    }
+    
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -123,7 +34,9 @@ public class Compilador extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         ta_Codigo = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbl_simb = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txt_consola = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -131,6 +44,8 @@ public class Compilador extends javax.swing.JFrame {
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem5 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -145,7 +60,7 @@ public class Compilador extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(ta_Codigo);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbl_simb.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -161,12 +76,16 @@ public class Compilador extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane3.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
+        jScrollPane3.setViewportView(tbl_simb);
+        if (tbl_simb.getColumnModel().getColumnCount() > 0) {
+            tbl_simb.getColumnModel().getColumn(0).setResizable(false);
+            tbl_simb.getColumnModel().getColumn(1).setResizable(false);
+            tbl_simb.getColumnModel().getColumn(2).setResizable(false);
         }
+
+        txt_consola.setColumns(20);
+        txt_consola.setRows(5);
+        jScrollPane2.setViewportView(txt_consola);
 
         jMenu1.setText("File");
 
@@ -192,6 +111,18 @@ public class Compilador extends javax.swing.JFrame {
         jMenu2.setText("Edit");
         jMenuBar1.add(jMenu2);
 
+        jMenu3.setText("Ejecutar");
+
+        jMenuItem5.setText("Analizador Lexico");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem5);
+
+        jMenuBar1.add(jMenu3);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -202,11 +133,16 @@ public class Compilador extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 818, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jScrollPane2)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 679, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE))
         );
 
         pack();
@@ -224,6 +160,16 @@ public class Compilador extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_ta_CodigoKeyPressed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        DefaultTableModel m = (DefaultTableModel) tbl_simb.getModel();
+        new AnalizadorLexico(lista_token).analizar(ta_Codigo.getText());
+        for(int i = 0; i < lista_token.size(); i++){
+            txt_consola.setText(txt_consola.getText() + "\n" + lista_token.get(i).toString());
+            m.addRow(new Object[]{lista_token.get(i).getFila()} );
+        }
+
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -261,18 +207,23 @@ public class Compilador extends javax.swing.JFrame {
     }
     
     private DefaultTableModel m = new DefaultTableModel();
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextArea ta_Codigo;
+    private javax.swing.JTable tbl_simb;
+    private javax.swing.JTextArea txt_consola;
     // End of variables declaration//GEN-END:variables
 }
