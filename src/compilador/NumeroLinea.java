@@ -15,7 +15,7 @@ public class NumeroLinea extends JPanel
     public final static float CENTER = 0.5f;
     public final static float RIGHT = 1.0f;
     private Color color1 = new Color(7,86,100);
-    private final static Border OUTER = new MatteBorder(0, 0, 0, 2,Color.BLACK);
+    private final static Border OUTER = new MatteBorder(0, 0, 0, 2,Color.blue);
 
     private final static int HEIGHT = Integer.MAX_VALUE - 1000000;
 
@@ -32,7 +32,7 @@ public class NumeroLinea extends JPanel
     private int lastHeight;
     private int lastLine;
 
-    private HashMap<String, FontMetrics> fonts;
+    private HashMap < String, FontMetrics> fonts;
 
     
     public NumeroLinea(JTextComponent component) {
