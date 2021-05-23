@@ -7,7 +7,12 @@ package compilador;
 
 
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -18,6 +23,12 @@ public class Compilador extends javax.swing.JFrame {
 
     NumeroLinea numeroLinea;
     ArrayList<Token> lista_token = new ArrayList();
+    
+    //para archivos
+    JFileChooser seleccionar = new JFileChooser();
+    File archivo;
+    FileInputStream entrada;
+    FileOutputStream salida;
     
     public Compilador() {
         initComponents();
@@ -31,6 +42,9 @@ public class Compilador extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenuBar2 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
         jScrollPane1 = new javax.swing.JScrollPane();
         ta_Codigo = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -38,14 +52,23 @@ public class Compilador extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         txt_consola = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        btnArchivo = new javax.swing.JMenu();
+        btnNuevoArchiv = new javax.swing.JMenuItem();
+        btnAbrir = new javax.swing.JMenuItem();
+        btnGuardar = new javax.swing.JMenuItem();
+        btnGuardarComo = new javax.swing.JMenuItem();
+        btnEditar = new javax.swing.JMenu();
+        btnEjecutar = new javax.swing.JMenu();
+        btnAnalizadorLexico = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
-        jMenuItem5 = new javax.swing.JMenuItem();
+
+        jMenu1.setText("File");
+        jMenuBar2.add(jMenu1);
+
+        jMenu2.setText("Edit");
+        jMenuBar2.add(jMenu2);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -78,48 +101,63 @@ public class Compilador extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(tbl_simb);
         if (tbl_simb.getColumnModel().getColumnCount() > 0) {
-            tbl_simb.getColumnModel().getColumn(0).setResizable(false);
-            tbl_simb.getColumnModel().getColumn(1).setResizable(false);
-            tbl_simb.getColumnModel().getColumn(2).setResizable(false);
+            tbl_simb.getColumnModel().getColumn(0).setMinWidth(50);
+            tbl_simb.getColumnModel().getColumn(0).setPreferredWidth(50);
+            tbl_simb.getColumnModel().getColumn(0).setMaxWidth(50);
         }
 
         txt_consola.setColumns(20);
         txt_consola.setRows(5);
         jScrollPane2.setViewportView(txt_consola);
 
-        jMenu1.setText("File");
+        btnArchivo.setText("Archivo");
 
-        jMenuItem1.setText("New File");
-        jMenu1.add(jMenuItem1);
+        btnNuevoArchiv.setText("Nuevo archivo");
+        btnArchivo.add(btnNuevoArchiv);
 
-        jMenuItem2.setText("Open");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        btnAbrir.setText("Abrir");
+        btnAbrir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                btnAbrirActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem2);
+        btnArchivo.add(btnAbrir);
 
-        jMenuItem3.setText("Save");
-        jMenu1.add(jMenuItem3);
-
-        jMenuItem4.setText("Save As");
-        jMenu1.add(jMenuItem4);
-
-        jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
-
-        jMenu3.setText("Ejecutar");
-
-        jMenuItem5.setText("Analizador Lexico");
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+        btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
+                btnGuardarActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem5);
+        btnArchivo.add(btnGuardar);
+
+        btnGuardarComo.setText("Guardar como");
+        btnArchivo.add(btnGuardarComo);
+
+        jMenuBar1.add(btnArchivo);
+
+        btnEditar.setText("Editar");
+        jMenuBar1.add(btnEditar);
+
+        btnEjecutar.setText("Ejecutar");
+
+        btnAnalizadorLexico.setText("Analizador Lexico");
+        btnAnalizadorLexico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAnalizadorLexicoActionPerformed(evt);
+            }
+        });
+        btnEjecutar.add(btnAnalizadorLexico);
+
+        jMenuBar1.add(btnEjecutar);
+
+        jMenu3.setText("Tablas");
+
+        jMenuItem1.setText("Tabla variables");
+        jMenu3.add(jMenuItem1);
+
+        jMenuItem2.setText("Tabla funciones");
+        jMenu3.add(jMenuItem2);
 
         jMenuBar1.add(jMenu3);
 
@@ -148,9 +186,19 @@ public class Compilador extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    private void btnAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbrirActionPerformed
+        if(seleccionar.showDialog(null, "Abrir")==JFileChooser.APPROVE_OPTION){ //Se aprueba que el evento a realizar sea abrir
+           archivo=seleccionar.getSelectedFile(); //se selecciona el archivo
+           if(archivo.canRead()){
+               if(archivo.getName().endsWith("txt")){ //verifica que el archivo tenga extencion .txt
+                   String documento = AbrirArchivo(archivo); 
+                   ta_Codigo.setText(documento); //Se envia el texto al textArea
+               }else{
+                   JOptionPane.showMessageDialog(null,"Archivo no compatible");  //si el archivo no es compatible
+               }
+           }
+       }
+    }//GEN-LAST:event_btnAbrirActionPerformed
 
     private void ta_CodigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ta_CodigoKeyPressed
         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
@@ -161,15 +209,74 @@ public class Compilador extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_ta_CodigoKeyPressed
 
-    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+    //se crean estos metodos
+    public String AbrirArchivo(File archivo){
+        String documento = "";
+        try{
+            entrada = new FileInputStream(archivo);
+            int ascci;
+            while((ascci = entrada.read())!=-1){
+                char caracter = (char)ascci;
+                documento+=caracter;
+            }
+        }catch (Exception e){
+        }
+        return documento;
+    }
+    
+    
+    public String GuardarArchivo (File archivo, String documento){
+        String mensaje = null;
+        try{
+            salida = new FileOutputStream(archivo);
+            byte[] bytxt = documento.getBytes();
+            salida.write(bytxt);
+            mensaje = "Archivo Guardado";
+        } catch(Exception e){
+        }
+        return mensaje;
+    }
+    private void btnAnalizadorLexicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalizadorLexicoActionPerformed
+        //limpiar tabla
+        lista_token.clear();
+//        if(tbl_simb.getRowCount()>0){
+//            int p = tbl_simb.getRowCount()-1;
+//            for (int i = 0; i < tbl_simb.getRowCount(); i++) {
+//                m.removeRow(p);
+//                p -=1;
+//            }
+//        }
+        
+        //Revisar tabla de palabras reservadas
+        
+        
+        
+        //agregar todo a la tabla
         DefaultTableModel m = (DefaultTableModel) tbl_simb.getModel();
         new AnalizadorLexico(lista_token).analizar(ta_Codigo.getText());
         for(int i = 0; i < lista_token.size(); i++){
             txt_consola.setText(txt_consola.getText() + "\n" + lista_token.get(i).toString());
-            m.addRow(new Object[]{lista_token.get(i).getFila()} );
+            m.addRow(new Object[]{lista_token.get(i).getFila(), lista_token.get(i).getLexema(), lista_token.get(i).getTipo()} );
         }
 
-    }//GEN-LAST:event_jMenuItem5ActionPerformed
+    }//GEN-LAST:event_btnAnalizadorLexicoActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+       if(seleccionar.showDialog(null, "Guardar")==JFileChooser.APPROVE_OPTION){
+            archivo = seleccionar.getSelectedFile(); //seleccionar carpeta donde guardar
+            if(archivo.getName().endsWith("txt")){ //se verifica que el nombre del archivo finalice en txt
+                String Documento = ta_Codigo.getText(); //se obtiene el texto del textArea
+                String mensaje = GuardarArchivo(archivo, Documento); //se llama al metodo guardar archivo
+                if(mensaje!=null){
+                    JOptionPane.showMessageDialog(null, mensaje);
+                }else{
+                    JOptionPane.showMessageDialog(null, "Archivo No Compatible"); //si no es .txt
+                }
+            }else{
+                JOptionPane.showMessageDialog(null, "Guardar Documento de Texto"); //si cumple se guarda
+            }
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -210,15 +317,21 @@ public class Compilador extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem btnAbrir;
+    private javax.swing.JMenuItem btnAnalizadorLexico;
+    private javax.swing.JMenu btnArchivo;
+    private javax.swing.JMenu btnEditar;
+    private javax.swing.JMenu btnEjecutar;
+    private javax.swing.JMenuItem btnGuardar;
+    private javax.swing.JMenuItem btnGuardarComo;
+    private javax.swing.JMenuItem btnNuevoArchiv;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;

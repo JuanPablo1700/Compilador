@@ -3,126 +3,209 @@ package compilador;
 import java.util.ArrayList;
 
 public class AnalizadorLexico {
-    
 
-        ArrayList<Token> lista_token = new ArrayList();
-        public AnalizadorLexico(ArrayList<Token> lista_token) {
-            this.lista_token = lista_token;
-        }
-        
-        public void analizar(String cadena){
-            int estado = 0;
-            //int decimal = 0;
-            int num_token = 0;
-            String lexema = "";
-            String tipo = "";
-            String [] lineas = separador(cadena, '\n');
-            
-            
-            for (int i = 0; i < lineas.length; i++) {
-                for (int j = 0; j < lineas[i].length(); j++) {
-                    int n_actual, n_siguiente = -1;
-                    
-                    //obtenemos el numero del caracter en la tabla assci
-                    n_actual = lineas[i].codePointAt(j);
-                    if (estado == 0) {
-                        estado = compara_letra(n_actual);
-                    }
-                    try{
-                        //Obtenemos el numero de la tabla assci del caracter que sea mas 1
-                        n_siguiente = lineas[i].codePointAt(j + 1);
-                    }catch(Exception e){
-                        
-                    }
-                    switch(estado){
-                        case 1:
-                            lexema = lexema + lineas[i].charAt(j);
-                            if ((n_siguiente > 96 && n_siguiente < 123)||(n_siguiente > 64 && n_siguiente < 91)) {
-                              estado = 1;  
-                            }else{
-                                num_token = 1;
-                                tipo = "Cadena";        //asigna que es una cadena
-                                estado = 0;
+    ArrayList<Token> lista_token = new ArrayList();
+    String[] palabrasReservadas = {"automatic", "break", "case", "def", "default", "double", "else", "equals", "exit", "false", "float", "for", "if", "input", "int", "long",
+        "main", "new", "print", "private", "rotateLeft", "rotateRight", "on", "off", "public", "return", "static", "stop", "string",
+        "switch", "this", "true", "void", "while"};
+
+    String[][] operadoresArit = {{"+", "OpArit Suma"}, {"-", "OpArit Resta"}, {"/", "OpArit División"}, {"*", "OpArit División"}, {"*", "OpArit Resto"}};
+    String[][] operadoresRela = {{"<", "OpRel Menor"}, {">", "OpRel Mayor"}, {"==", "OpRel igual"}, {"<=", "OpRel Menor igual"}, {">=", "OpRel Mayor igual"}, {"!=", "OpRel Diferente"}};
+    String[][] operadoresLogicos = {{"&&", "OpLog And"}, {"||", "OpLog Or"}, {"!", "OpLog Not"}};
+    String[][] operadoresAgrupacion = {{"(", "Paréntesis de apertura"}, {")", "Paréntesis de cierre"}, {"[", "Corchete de apertura"}, {"]", "Corchete de cierre"}, {"{", "Llave de apertura"}, {"}", "Llave de cierre"}};
+    String[][] simbEspeciales = {{";", "Simbolo fin instrucción"}, {":", "Simbolo dos puntos"}, {"_", "Simbolo guión bajo"}, {"'", "Simbolo comilla simple"}, {",", "Simbolo coma"}, {".", "Simbolo punto"}, {"@", "Simbolo arroba"}};
+
+    public AnalizadorLexico(ArrayList<Token> lista_token) {
+        this.lista_token = lista_token;
+    }
+
+    public void analizar(String cadena) {
+        int estado = 0;
+        //int decimal = 0;
+        int num_token = 0;
+        String lexema = "";
+        String tipo = "";
+        String[] lineas = separador(cadena, '\n');
+        boolean match;
+
+        for (int i = 0; i < lineas.length; i++) { //recorrer todas las líneas
+            for (int j = 0; j < lineas[i].length(); j++) { //recorrer letra por letra de la linea
+                int n_actual, n_siguiente = -1;
+
+                //obtenemos el numero del caracter en la tabla assci
+                n_actual = lineas[i].codePointAt(j);
+                if (estado == 0) {
+                    estado = definir_caracter(n_actual);
+                }
+                try {
+                    //Obtenemos el numero de la tabla assci del caracter que sea mas 1
+                    n_siguiente = lineas[i].codePointAt(j + 1);
+                } catch (Exception e) {
+
+                }
+                switch (estado) {
+                    case 1:
+                        lexema = lexema + lineas[i].charAt(j);
+                        if ((n_siguiente > 96 && n_siguiente < 123) || (n_siguiente > 64 && n_siguiente < 91 || (n_siguiente > 47 && n_siguiente < 58) || n_siguiente == 95)) {
+                            estado = 1;
+                        } else {
+                            for (int k = 0; k < palabrasReservadas.length; k++) {
+                                if (lexema.equals(palabrasReservadas[k])) {//si es reservada
+                                    tipo = "Palabra reservada";
+                                    estado = 0;
+                                }
                             }
-                           break;
-                        case 2:
-                            lexema = lexema + lineas[i].charAt(j);
-                            if(n_siguiente > 47 && n_siguiente < 58){ //si es un dígito
-                                estado = 2 ;
-                            }else{
-                                num_token = 2;
-                                tipo = "Entero"; //Indica que es un número entero
-                                estado = 0;
+                            if (!tipo.equals("Palabra reservada")) {
+                                match = lexema.matches("[a-zA-Z]+[\\w_]*");  //Identificador
+                                if (match) {
+                                    tipo = "Identificador";
+                                    estado = 0;
+                                } else {
+                                    num_token = 1;
+                                    tipo = "Desconocido en estado1";        //asigna que es una cadena
+                                    estado = 0;
+                                }
                             }
-                           break;
-                        case 100: //ignorar espacios en blancos
-                            estado = -2;
+                        }
                         break;
-                        case 999:
-                            lexema = String.valueOf(lineas[i].charAt(j));
-                            num_token = 999;
-                             tipo = "Desconocido";
-                             estado = 0;
+                    case 2://números
+                        lexema = lexema + lineas[i].charAt(j);
+                        if (n_siguiente > 47 && n_siguiente < 58 || n_siguiente == 46) { //si es numero
+                            estado = 2;
+                        } else {
+                            if (lexema.matches("[-+]?[0-9]*[.]?[0-9]+")) {
+                                tipo = "Número";
+                            } else if (lexema.matches("[-+]?[0-9]+")) {
+                                tipo = "Número";
+                            } else {
+                                tipo = "Numero Desconocido tipo2";
+                            }
+                            estado = 0;
+                            num_token = 2;
+                        }
+
                         break;
-                    }//fin switch
-                    if (estado == 0){ 
-                        lista_token.add(new Token(lexema, num_token, i+1,j+1,tipo)); //recibe lexema, numToken, fila, columna
-                        
-                        lexema = ""; //limpiar
-                        tipo = "";
-                    }
-                    if (estado == -2){ //salto, tab, espacios
+                    case 3: //signo =
+                        lexema = String.valueOf(lineas[i].charAt(j));
+                        tipo = "Signo asignación";
                         estado = 0;
-                    }
+                        break;
+                    case 4: //operadores logicos
+                        lexema = lexema + lineas[i].charAt(j);
+                        if (n_siguiente == 32 || n_siguiente == 13 || n_siguiente == 9) {//compara si es espacio, tab, enter
+                            estado = 4;
+                        } else {
+                            for (int k = 0; k < operadoresLogicos.length; k++) {
+                                if (lexema.equals(operadoresLogicos[k][0])) {//
+                                    tipo = operadoresLogicos[k][1];
+                                    estado = 0;
+                                    break;
+                                }
+                            }
+                        }
+                        break;
+                    case 100: //ignorar espacios en blancos
+                        estado = -2;
+                        break;
+                    case 999:
+                        lexema = String.valueOf(lineas[i].charAt(j));
+
+                        for (int k = 0; k < operadoresArit.length; k++) {
+                            if (lexema.equals(operadoresArit[k][0])) {//
+                                tipo = operadoresArit[k][1];
+                                estado = 0;
+                                break;
+                            }
+                        }
+                        for (int k = 0; k < operadoresRela.length; k++) {
+                            if (lexema.equals(operadoresRela[k][0])) {//
+                                tipo = operadoresRela[k][1];
+                                estado = 0;
+                                break;
+                            }
+                        }
+
+                        for (int k = 0; k < operadoresAgrupacion.length; k++) {
+                            if (lexema.equals(operadoresAgrupacion[k][0])) {//
+                                tipo = operadoresAgrupacion[k][1];
+                                estado = 0;
+                                break;
+                            }
+                        }
+                        for (int k = 0; k < simbEspeciales.length; k++) {
+                            if (lexema.equals(simbEspeciales[k][0])) {//
+                                tipo = simbEspeciales[k][1];
+                                estado = 0;
+                                break;
+                            }
+                        }
+
+                        //                          num_token = 999;
+//                            tipo = "Desconocido";
+//                            estado = 0;
+                        break;
+                }//fin switch
+                if (estado == 0) {
+                    lista_token.add(new Token(lexema, num_token, i + 1, j + 1, tipo)); //recibe lexema, numToken, fila, columna
+
+                    lexema = ""; //limpiar
+                    tipo = "";
+                }
+                if (estado == -2) { //salto, tab, espacios
+                    estado = 0;
                 }
             }
-        }
-        
-        /**
-         * 
-         * @param n
-         * @return 1 si es letra y return 0 si no
-         */
-        public int compara_letra(int n){ //recibe elnúmero Ascci
-            
-            if ((n > 96 && n < 123)||(n > 64 && n < 91)) { //Compara si es letra
-                return 1;
-            }else if(n > 47 && n < 58){ //si es un dígito
-                return 2;
-            }else if(n == 32 || n== 13 || n == 9){//compara si es espacio, tab, enter
-                return 100;
-            }else{  //caracter no válido
-                return 999;
-            }
-        }
-        
-        
-        /**
-         * Metodo para separar el texto en cadenas segun el parametro separar.
-         * @param texto
-         * @param separar
-         * @return 
-         */
-        public String[] separador(String texto, char separar){
-            String linea = "";
-            int contador = 0;
-            for (int i=0;i<texto.length();i++){
-                if(texto.charAt(i) == separar){
-                    contador++;
-                }
-            }
-            String [] cadenas = new String[contador];
-            contador = 0;
-            for (int i = 0; i < texto.length(); i++) {
-                if (texto.charAt(i) != separar) {
-                    linea = linea + String.valueOf(texto.charAt(i));
-                }else{
-                    cadenas[contador] = linea;
-                    contador++;
-                    linea = "";
-                }
-            }
-            return cadenas;
         }
     }
 
+    /**
+     *
+     * @param n
+     * @return 1 si es letra y return 0 si no
+     */
+    public int definir_caracter(int n) { //recibe elnúmero Ascci
+
+        if ((n > 96 && n < 123) || (n > 64 && n < 91)) { //Compara si es letra o _
+            return 1;
+        } else if (n > 47 && n < 58 || n == 46 || n == 45 || n == 43) { //si es un dígito  -=45, + =43
+            return 2;
+        } else if (n == 32 || n == 13 || n == 9) {//compara si es espacio, tab, enter
+            return 100;
+        } else if (n == 61) { //si es operador asig (=)
+            return 3;
+        } else if (n == 38 || n == 179 || n == 33) { //para and 38= (&&), or(||) = 179, not(!) =33
+            return 4;
+        } else {  //caracter no válido
+            return 999;
+        }
+    }
+
+    /**
+     * Metodo para separar el texto en cadenas segun el parametro separar.
+     *
+     * @param texto
+     * @param separar
+     * @return
+     */
+    public String[] separador(String texto, char separar) {
+        String linea = "";
+        int contador = 0;
+        for (int i = 0; i < texto.length(); i++) {
+            if (texto.charAt(i) == separar) {
+                contador++;
+            }
+        }
+        String[] cadenas = new String[contador];
+        contador = 0;
+        for (int i = 0; i < texto.length(); i++) {
+            if (texto.charAt(i) != separar) {
+                linea = linea + String.valueOf(texto.charAt(i));
+            } else {
+                cadenas[contador] = linea;
+                contador++;
+                linea = "";
+            }
+        }
+        return cadenas;
+    }
+}
