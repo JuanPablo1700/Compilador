@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -219,7 +220,8 @@ public class Compilador extends javax.swing.JFrame {
                 char caracter = (char)ascci;
                 documento+=caracter;
             }
-        }catch (Exception e){
+        }catch (IOException e){
+            JOptionPane.showMessageDialog(null, "Error al Abrir. "+e);
         }
         return documento;
     }
@@ -238,21 +240,17 @@ public class Compilador extends javax.swing.JFrame {
     }
     private void btnAnalizadorLexicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalizadorLexicoActionPerformed
         //limpiar tabla
-        lista_token.clear();
-//        if(tbl_simb.getRowCount()>0){
-//            int p = tbl_simb.getRowCount()-1;
-//            for (int i = 0; i < tbl_simb.getRowCount(); i++) {
-//                m.removeRow(p);
-//                p -=1;
-//            }
-//        }
-        
-        //Revisar tabla de palabras reservadas
-        
-        
-        
-        //agregar todo a la tabla
         DefaultTableModel m = (DefaultTableModel) tbl_simb.getModel();
+        lista_token.clear();
+        if(m.getRowCount()>0){
+            int p = m.getRowCount()-1, t = m.getRowCount();
+            for (int i = 0; i < t; i++) {
+                m.removeRow(p);
+                p--;
+            }
+        }
+        
+        //agregar todo a la tabla        
         new AnalizadorLexico(lista_token).analizar(ta_Codigo.getText());
         for(int i = 0; i < lista_token.size(); i++){
             txt_consola.setText(txt_consola.getText() + "\n" + lista_token.get(i).toString());
