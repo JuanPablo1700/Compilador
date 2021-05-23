@@ -49,12 +49,13 @@ public class AnalizadorLexico {
                         if ((n_siguiente > 96 && n_siguiente < 123) || (n_siguiente > 64 && n_siguiente < 91 || (n_siguiente > 47 && n_siguiente < 58) || n_siguiente == 95)) {
                             estado = 1;
                         } else {
-                            for (int k = 0; k < palabrasReservadas.length; k++) {
-                                if (lexema.equals(palabrasReservadas[k])) {//si es reservada
-                                    tipo = "Palabra reservada";
-                                    estado = 0;
-                                }
-                            }
+                    for (String palabrasReservada : palabrasReservadas) {
+                        if (lexema.equals(palabrasReservada)) {
+                            //si es reservada
+                            tipo = "Palabra reservada";
+                            estado = 0;
+                        }
+                    }
                             if (!tipo.equals("Palabra reservada")) {
                                 match = lexema.matches("[a-zA-Z]+[\\w_]*");  //Identificador
                                 if (match) {
@@ -95,14 +96,33 @@ public class AnalizadorLexico {
                         if (n_siguiente == 32 || n_siguiente == 13 || n_siguiente == 9) {//compara si es espacio, tab, enter
                             estado = 4;
                         } else {
-                            for (int k = 0; k < operadoresLogicos.length; k++) {
-                                if (lexema.equals(operadoresLogicos[k][0])) {//
-                                    tipo = operadoresLogicos[k][1];
+                            for (String[] operadoresLogico : operadoresLogicos) {
+                                if (lexema.equals(operadoresLogico[0])) {
+                                //
+                                    tipo = operadoresLogico[1];
                                     estado = 0;
                                     break;
                                 }
                             }
                         }
+                        break;
+                    case 5: //operadores logicos
+                        lexema = lexema + lineas[i].charAt(j);
+                        if (n_siguiente == 61) {// determina <=, >=, ==, !=
+                            estado = 5;
+                        } else {
+                            for (String[] OperadorRela : operadoresRela) {
+                                if (lexema.equals(OperadorRela[0])) {
+                                    tipo = OperadorRela[1];
+                                    estado = 0;
+                                    break;
+                                }else{
+                                    tipo = "Desconocido caso 5";
+                                    estado = 0;
+                                }
+                            }
+                        }
+                        
                         break;
                     case 100: //ignorar espacios en blancos
                         estado = -2;
@@ -175,7 +195,9 @@ public class AnalizadorLexico {
             return 3;
         } else if (n == 38 || n == 179 || n == 33) { //para and 38= (&&), or(||) = 179, not(!) =33
             return 4;
-        } else {  //caracter no válido
+        } else if (n == 60 || n == 62 || n == 33 || n == 61) { //
+            return 5;
+        }else{  //caracter no válido
             return 999;
         }
     }
