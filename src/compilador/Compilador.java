@@ -25,7 +25,7 @@ public class Compilador extends javax.swing.JFrame {
     NumeroLinea numeroLinea;
     ArrayList<Token> lista_token = new ArrayList();
     ArrayList<Token> lista_errores = new ArrayList();
-    
+    String [] palabrasReservadas;
     //para archivos
     JFileChooser seleccionar = new JFileChooser();
     File archivo;
@@ -64,7 +64,6 @@ public class Compilador extends javax.swing.JFrame {
         btnAnalizadorLexico = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
 
         jMenu1.setText("File");
         jMenuBar2.add(jMenu1);
@@ -155,11 +154,13 @@ public class Compilador extends javax.swing.JFrame {
 
         jMenu3.setText("Tablas");
 
-        jMenuItem1.setText("Tabla variables");
+        jMenuItem1.setText("Tabla Palabras Reservadas");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem1);
-
-        jMenuItem2.setText("Tabla funciones");
-        jMenu3.add(jMenuItem2);
 
         jMenuBar1.add(jMenu3);
 
@@ -283,6 +284,11 @@ public class Compilador extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        TablasPalReservada TPR = new TablasPalReservada();
+        TPR.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -336,7 +342,6 @@ public class Compilador extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
