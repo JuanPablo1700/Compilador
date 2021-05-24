@@ -9,13 +9,12 @@ public class AnalizadorLexico {
     String[] palabrasReservadas = {"automatic", "break", "case", "class", "def", "default", "double", "else", "equals", "exit", "false", "float", "for", "if", "input", "int", "long",
         "main", "new", "print", "private", "rotateLeft", "rotateRight", "on", "off", "public", "return", "static", "stop", "string",
         "switch", "this", "true", "void", "while"};
-
     String[][] operadoresArit = {{"+", "OpArit Suma"}, {"-", "OpArit Resta"}, {"/", "OpArit División"}, {"*", "OpArit División"}, {"%", "OpArit Resto"}};
     String[][] operadoresRela = {{"<", "OpRel Menor"}, {">", "OpRel Mayor"}, {"==", "OpRel igual"}, {"<=", "OpRel Menor igual"}, {">=", "OpRel Mayor igual"}, {"!=", "OpRel Diferente"}};
     String[][] operadoresLogicos = {{"&&", "OpLog And"}, {"||", "OpLog Or"}, {"!", "OpLog Not"}};
     String[][] operadoresAgrupacion = {{"(", "Paréntesis de apertura"}, {")", "Paréntesis de cierre"}, {"[", "Corchete de apertura"}, {"]", "Corchete de cierre"}, {"{", "Llave de apertura"}, {"}", "Llave de cierre"}};
     String[][] simbEspeciales = {{";", "Simbolo fin instrucción"}, {":", "Simbolo dos puntos"}, {"_", "Simbolo guión bajo"}, {"'", "Simbolo comilla simple"}, {",", "Simbolo coma"}, {".", "Simbolo punto"}, {"@", "Simbolo arroba"}};
-
+    
     public AnalizadorLexico(ArrayList<Token> lista_token, ArrayList<Token> lista_errores) {
         this.lista_token = lista_token;
         this.lista_errores = lista_errores;
