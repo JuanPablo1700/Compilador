@@ -14,7 +14,8 @@ public class Token {
     private int numero_token;
     private int fila;
     private int columna;
-    private String tipo; 
+    private String tipo;
+    private String error;
     
     public Token(){}
 
@@ -24,6 +25,11 @@ public class Token {
         this.fila = fila;
         this.columna = columna;
         this.tipo = tipo;
+    }
+    
+    public Token(String error, int fila){
+        this.error = error;
+        this.fila = fila;
     }
 
     public String getLexema() {
@@ -66,10 +72,22 @@ public class Token {
         this.tipo = tipo;
     }
 
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
+
+    public String toStringErr() {
+        return "Error{" + "Error lexico: " + error + " en la línea " + fila + '}';
+    }
+    
     @Override
     public String toString() {
         return "Token{" + "lexema=" + lexema + ", numero_token=" + numero_token + ", fila=" + fila + ", columna=" + columna + ", tipo=" + tipo + '}';
-    }
+    }    
     
     
 }

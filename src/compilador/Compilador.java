@@ -24,6 +24,7 @@ public class Compilador extends javax.swing.JFrame {
 
     NumeroLinea numeroLinea;
     ArrayList<Token> lista_token = new ArrayList();
+    ArrayList<Token> lista_errores = new ArrayList();
     
     //para archivos
     JFileChooser seleccionar = new JFileChooser();
@@ -242,6 +243,8 @@ public class Compilador extends javax.swing.JFrame {
         //limpiar tabla
         DefaultTableModel m = (DefaultTableModel) tbl_simb.getModel();
         lista_token.clear();
+        lista_errores.clear();
+        txt_consola.setText("");
         if(m.getRowCount()>0){
             int p = m.getRowCount()-1, t = m.getRowCount();
             for (int i = 0; i < t; i++) {
@@ -251,9 +254,13 @@ public class Compilador extends javax.swing.JFrame {
         }
         
         //agregar todo a la tabla        
-        new AnalizadorLexico(lista_token).analizar(ta_Codigo.getText());
+        new AnalizadorLexico(lista_token, lista_errores).analizar(ta_Codigo.getText());
+        
+        for (int i = 0; i < lista_errores.size(); i++) {
+            txt_consola.setText(txt_consola.getText() + "\n" + lista_errores.get(i).toStringErr());
+        }
+        
         for(int i = 0; i < lista_token.size(); i++){
-            txt_consola.setText(txt_consola.getText() + "\n" + lista_token.get(i).toString());
             m.addRow(new Object[]{lista_token.get(i).getFila(), lista_token.get(i).getLexema(), lista_token.get(i).getTipo()} );
         }
 
