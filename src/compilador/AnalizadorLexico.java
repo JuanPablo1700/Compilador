@@ -245,7 +245,7 @@ public class AnalizadorLexico {
             return 1;
         } else if ( n == 45 || n == 43 ) { //si es un signo  -=45, + =43
             return 999;
-        } else if (n > 47 && n < 58 || n == 46 || n == 45 || n == 43 || n == 44) { //si es un dígito  -=45, + =43, .=46, ,=44 
+        } else if (n > 47 && n < 58 || n == 46 || n == 45 || n == 43 ) { //si es un dígito  -=45, + =43, .=46,
             return 2;
         } else if (n == 32 || n == 13 || n == 9) {//compara si es espacio, tab, enter
             return 100;
