@@ -53,13 +53,15 @@ public class Compilador extends javax.swing.JFrame {
         tbl_simb = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         txt_consola = new javax.swing.JTextArea();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         btnArchivo = new javax.swing.JMenu();
-        btnNuevoArchiv = new javax.swing.JMenuItem();
         btnAbrir = new javax.swing.JMenuItem();
         btnGuardar = new javax.swing.JMenuItem();
-        btnGuardarComo = new javax.swing.JMenuItem();
-        btnEditar = new javax.swing.JMenu();
         btnEjecutar = new javax.swing.JMenu();
         btnAnalizadorLexico = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
@@ -74,6 +76,7 @@ public class Compilador extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         setSize(new java.awt.Dimension(1200, 700));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         ta_Codigo.setColumns(20);
         ta_Codigo.setRows(5);
@@ -84,6 +87,9 @@ public class Compilador extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(ta_Codigo);
 
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 9, 810, 390));
+
+        tbl_simb.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 92, 103)));
         tbl_simb.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -100,6 +106,7 @@ public class Compilador extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tbl_simb.setGridColor(new java.awt.Color(51, 92, 103));
         jScrollPane3.setViewportView(tbl_simb);
         if (tbl_simb.getColumnModel().getColumnCount() > 0) {
             tbl_simb.getColumnModel().getColumn(0).setMinWidth(50);
@@ -107,14 +114,46 @@ public class Compilador extends javax.swing.JFrame {
             tbl_simb.getColumnModel().getColumn(0).setMaxWidth(50);
         }
 
+        getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(824, 9, 370, 390));
+
         txt_consola.setColumns(20);
         txt_consola.setRows(5);
         jScrollPane2.setViewportView(txt_consola);
 
-        btnArchivo.setText("Archivo");
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 404, 1110, 270));
 
-        btnNuevoArchiv.setText("Nuevo archivo");
-        btnArchivo.add(btnNuevoArchiv);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/rueda.png"))); // NOI18N
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 600, -1, 80));
+
+        jPanel1.setBackground(new java.awt.Color(51, 92, 103));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel2.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel2.setFont(new java.awt.Font("Rockwell", 1, 48)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(224, 159, 62));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("P");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 540, 50, 50));
+
+        jLabel3.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel3.setFont(new java.awt.Font("Rockwell", 1, 48)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(224, 159, 62));
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("J");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 410, 50, 60));
+
+        jLabel4.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel4.setFont(new java.awt.Font("Rockwell", 1, 48)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(224, 159, 62));
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("A");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 480, 50, 50));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1200, 680));
+
+        jMenuBar1.setBackground(new java.awt.Color(0, 153, 153));
+
+        btnArchivo.setText("Archivo");
 
         btnAbrir.setText("Abrir");
         btnAbrir.addActionListener(new java.awt.event.ActionListener() {
@@ -132,13 +171,7 @@ public class Compilador extends javax.swing.JFrame {
         });
         btnArchivo.add(btnGuardar);
 
-        btnGuardarComo.setText("Guardar como");
-        btnArchivo.add(btnGuardarComo);
-
         jMenuBar1.add(btnArchivo);
-
-        btnEditar.setText("Editar");
-        jMenuBar1.add(btnEditar);
 
         btnEjecutar.setText("Ejecutar");
 
@@ -165,26 +198,6 @@ public class Compilador extends javax.swing.JFrame {
         jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 818, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(jScrollPane2)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE))
-        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -331,17 +344,19 @@ public class Compilador extends javax.swing.JFrame {
     private javax.swing.JMenuItem btnAbrir;
     private javax.swing.JMenuItem btnAnalizadorLexico;
     private javax.swing.JMenu btnArchivo;
-    private javax.swing.JMenu btnEditar;
     private javax.swing.JMenu btnEjecutar;
     private javax.swing.JMenuItem btnGuardar;
-    private javax.swing.JMenuItem btnGuardarComo;
-    private javax.swing.JMenuItem btnNuevoArchiv;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
