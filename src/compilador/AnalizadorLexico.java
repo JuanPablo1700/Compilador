@@ -14,12 +14,16 @@ public class AnalizadorLexico {
     String[][] operadoresLogicos = {{"&&", "OpLog And"}, {"||", "OpLog Or"}, {"!", "OpLog Not"}};
     String[][] operadoresAgrupacion = {{"(", "Paréntesis de apertura"}, {")", "Paréntesis de cierre"}, {"[", "Corchete de apertura"}, {"]", "Corchete de cierre"}, {"{", "Llave de apertura"}, {"}", "Llave de cierre"}};
     String[][] simbEspeciales = {{";", "Simbolo fin instrucción"}, {":", "Simbolo dos puntos"}, {"_", "Simbolo guión bajo"}, {"'", "Simbolo comilla simple"}, {",", "Simbolo coma"}, {".", "Simbolo punto"}, {"@", "Simbolo arroba"}};
-    
-    public AnalizadorLexico(ArrayList<Token> lista_token, ArrayList<Token> lista_errores) {
+
+    ArrayList<String> lista_identificadores = new ArrayList<>();
+            
+    public AnalizadorLexico(ArrayList<Token> lista_token, ArrayList<Token> lista_errores,ArrayList<String> lista_identificadores) {
         this.lista_token = lista_token;
         this.lista_errores = lista_errores;
+        this.lista_identificadores = lista_identificadores;
     }
 
+ 
     public void analizar(String cadena) {
         int estado = 0;
         //int decimal = 0;
@@ -33,13 +37,13 @@ public class AnalizadorLexico {
             for (int j = 0; j < lineas[i].length(); j++) { //recorrer letra por letra de la linea
                 int n_actual, n_siguiente = -1;
 
-                //obtenemos el numero del caracter en la tabla assci
+                //obtenemos el numero del caracter en la tabla ascii
                 n_actual = lineas[i].codePointAt(j);
                 if (estado == 0) {
                     estado = definir_caracter(n_actual);
                 }
                 try {
-                    //Obtenemos el numero de la tabla assci del caracter que sea mas 1
+                    //Obtenemos el numero de la tabla ascii del caracter que sea mas 1
                     n_siguiente = lineas[i].codePointAt(j + 1);
                 } catch (Exception e) {
 
@@ -61,6 +65,7 @@ public class AnalizadorLexico {
                                 match = lexema.matches("[a-zA-Z]+[\\w_]*");  //Identificador
                                 if (match) {
                                     tipo = "Identificador";
+                                    lista_identificadores.add(lexema);
                                     estado = 0;
                                 } else {
                                     tipo = "Identificador invalido ";        //asigna que es una cadena
@@ -71,23 +76,29 @@ public class AnalizadorLexico {
                         break;
                     case 2://números
                         lexema = lexema + lineas[i].charAt(j);
-                        if (n_siguiente > 47 && n_siguiente < 58 || n_siguiente == 46 || n_siguiente == 44 /*|| n_siguiente == 45 || n_siguiente == 43*/) { //si es numero
+                        //if (n_siguiente > 47 && n_siguiente < 58 || n_siguiente == 46 || n_siguiente == 44 /*|| n_siguiente == 45 || n_siguiente == 43*/) { //si es numero
+                        if (n_siguiente > 47 && n_siguiente < 58 || n_siguiente == 46 || n_siguiente == 44 || (n_siguiente > 96 && n_siguiente < 123) || (n_siguiente > 64 && n_siguiente < 91)) { //si es dígito o letra
                             estado = 2;
                         } else {
                             if (lexema.matches("[-+]?[0-9]*[.]?[0-9]+")) {
                                 tipo = "Número";
                             } else if (lexema.matches("[-+]?[0-9]*[.]$")) {
-                                tipo = "Número invalido, se esperaba un digito despues del punto ";
+                                tipo = "Número invalido, se esperaba un digito despues del punto. ";
                                 estado = 404;
                                 break;
                             } else if (lexema.matches("[+-]?[.0-9]{0,}")) {
-                                tipo = "Número invalido, no es posible tener más de un punto. Error ";
+                                tipo = "Número invalido, no es posible tener más de un punto.";
                                 estado = 404;
                                 break;
                             } else if (lexema.matches("[+-]?[,.0-9]{0,}")) {
-                                tipo = "Número invalido, no es posible tener una coma(,). Error ";
+                                tipo = "Número invalido, no es posible tener una coma(,).";
                                 estado = 404;
                                 break;
+                            }else if (lexema.matches(".*[a-zA-Z]*.")) {		
+                                tipo = "Número inválido, no pueden estar letras después de un número o se espera operador.";		
+                                estado = 404;		
+                                break;		
+
                             } else /*if (lexema.matches("[-+0-9]{0,}")) {
                                 tipo = "Número";
                                 estado = 0;
@@ -237,15 +248,15 @@ public class AnalizadorLexico {
     /**
      *
      * @param n
-     * @return 1 si es letra y return 0 si no
+     * @return el caso para el while de acueredo a la comparación Ascii
      */
-    public int definir_caracter(int n) { //recibe elnúmero Ascci
+    public int definir_caracter(int n) { //recibe el número Ascii
 
         if ((n > 96 && n < 123) || (n > 64 && n < 91) || n == 95) { //Compara si es letra o _
             return 1;
-        } else if ( n == 45 || n == 43 ) { //si es un signo  -=45, + =43
+        } else if (n == 45 || n == 43) { //si es un signo  -=45, + =43
             return 999;
-        } else if (n > 47 && n < 58 || n == 46 || n == 45 || n == 43 ) { //si es un dígito  -=45, + =43, .=46,
+        } else if (n > 47 && n < 58 || n == 46 || n == 45 || n == 43) { //si es un dígito  -=45, + =43, .=46,
             return 2;
         } else if (n == 32 || n == 13 || n == 9) {//compara si es espacio, tab, enter
             return 100;

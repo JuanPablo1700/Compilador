@@ -81,7 +81,8 @@ public class Token {
     }
 
     public String toStringErr() {
-        return "Error{" + "Error lexico: " + error + " en la línea " + fila + '}';
+        //return "Error{" + "Error lexico: " + error + " en la línea " + fila + '}';
+        return "Error léxico en línea " + fila + ": " + error;
     }
     
     @Override

@@ -5,30 +5,28 @@
  */
 package compilador;
 
+import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author Juan Pablo
+ * @author arlet
  */
-public class TablasPalReservada extends javax.swing.JFrame {
-
-    String[] palabrasReservadas = {"automatic", "break", "case", "class", "def", "default", "double", "else", "equals", "exit", "false", "float", "for", "if", "input", "int", "long",
-        "main", "new", "print", "private", "rotateLeft", "rotateRight", "on", "off", "public", "return", "static", "stop", "string",
-        "switch", "this", "true", "void", "while"};
+public class tablaIdentificadores extends javax.swing.JFrame {
     
+    ArrayList<String> lista_identificadores = new ArrayList<>();
     /**
-     * Creates new form Tablas
+     * Creates new form tablaIdentificadores
      */
-    public TablasPalReservada() {
+    public tablaIdentificadores() {
         initComponents();
-        DefaultTableModel m = (DefaultTableModel) tbl_PR.getModel();
+        DefaultTableModel m = (DefaultTableModel) tbl_id.getModel();
         m.addColumn("");
-        for (int i=0;i < palabrasReservadas.length;i++) {
-            m.addRow(new Object[]{palabrasReservadas[i]});
+        for (int i=0;i < lista_identificadores.size();i++) {
+            m.addRow(new Object[]{lista_identificadores.get(i)});
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -39,11 +37,11 @@ public class TablasPalReservada extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbl_PR = new javax.swing.JTable();
+        tbl_id = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        tbl_PR.setModel(new javax.swing.table.DefaultTableModel(
+        tbl_id.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -51,7 +49,7 @@ public class TablasPalReservada extends javax.swing.JFrame {
 
             }
         ));
-        jScrollPane1.setViewportView(tbl_PR);
+        jScrollPane1.setViewportView(tbl_id);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -61,7 +59,7 @@ public class TablasPalReservada extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 471, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
         );
 
         pack();
@@ -84,27 +82,26 @@ public class TablasPalReservada extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TablasPalReservada.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(tablaIdentificadores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TablasPalReservada.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(tablaIdentificadores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TablasPalReservada.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(tablaIdentificadores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TablasPalReservada.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(tablaIdentificadores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TablasPalReservada().setVisible(true);
+                new tablaIdentificadores().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tbl_PR;
+    private javax.swing.JTable tbl_id;
     // End of variables declaration//GEN-END:variables
 }

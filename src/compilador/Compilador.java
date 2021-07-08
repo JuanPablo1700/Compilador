@@ -25,6 +25,7 @@ public class Compilador extends javax.swing.JFrame {
     NumeroLinea numeroLinea;
     ArrayList<Token> lista_token = new ArrayList();
     ArrayList<Token> lista_errores = new ArrayList();
+    ArrayList<String> lista_identificadores = new ArrayList<>();
     String [] palabrasReservadas;
     //para archivos
     JFileChooser seleccionar = new JFileChooser();
@@ -53,11 +54,11 @@ public class Compilador extends javax.swing.JFrame {
         tbl_simb = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         txt_consola = new javax.swing.JTextArea();
-        jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         btnArchivo = new javax.swing.JMenu();
         btnAbrir = new javax.swing.JMenuItem();
@@ -65,7 +66,8 @@ public class Compilador extends javax.swing.JFrame {
         btnEjecutar = new javax.swing.JMenu();
         btnAnalizadorLexico = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        bntTablaPalReserv = new javax.swing.JMenuItem();
+        btnTablaIdentificadores = new javax.swing.JMenuItem();
 
         jMenu1.setText("File");
         jMenuBar2.add(jMenu1);
@@ -114,16 +116,13 @@ public class Compilador extends javax.swing.JFrame {
             tbl_simb.getColumnModel().getColumn(0).setMaxWidth(50);
         }
 
-        getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(824, 9, 370, 390));
+        getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(824, 9, 410, 390));
 
         txt_consola.setColumns(20);
         txt_consola.setRows(5);
         jScrollPane2.setViewportView(txt_consola);
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 404, 1110, 270));
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/rueda.png"))); // NOI18N
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 600, -1, 80));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 404, 1150, 270));
 
         jPanel1.setBackground(new java.awt.Color(51, 92, 103));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -133,28 +132,33 @@ public class Compilador extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(224, 159, 62));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("P");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 540, 50, 50));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1180, 540, 50, 50));
 
         jLabel3.setBackground(new java.awt.Color(255, 255, 255));
         jLabel3.setFont(new java.awt.Font("Rockwell", 1, 48)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(224, 159, 62));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("J");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 410, 50, 60));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1180, 410, 50, 60));
 
         jLabel4.setBackground(new java.awt.Color(255, 255, 255));
         jLabel4.setFont(new java.awt.Font("Rockwell", 1, 48)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(224, 159, 62));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("A");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 480, 50, 50));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1180, 480, 50, 50));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1200, 680));
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/rueda.png"))); // NOI18N
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1170, 600, -1, 80));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1240, 680));
 
         jMenuBar1.setBackground(new java.awt.Color(0, 153, 153));
 
         btnArchivo.setText("Archivo");
 
+        btnAbrir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        btnAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_abrir.png"))); // NOI18N
         btnAbrir.setText("Abrir");
         btnAbrir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -163,6 +167,8 @@ public class Compilador extends javax.swing.JFrame {
         });
         btnArchivo.add(btnAbrir);
 
+        btnGuardar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_guardar.png"))); // NOI18N
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -175,6 +181,8 @@ public class Compilador extends javax.swing.JFrame {
 
         btnEjecutar.setText("Ejecutar");
 
+        btnAnalizadorLexico.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        btnAnalizadorLexico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/lexico.png"))); // NOI18N
         btnAnalizadorLexico.setText("Analizador Lexico");
         btnAnalizadorLexico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -187,13 +195,25 @@ public class Compilador extends javax.swing.JFrame {
 
         jMenu3.setText("Tablas");
 
-        jMenuItem1.setText("Tabla Palabras Reservadas");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        bntTablaPalReserv.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        bntTablaPalReserv.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/reservadas.png"))); // NOI18N
+        bntTablaPalReserv.setText("Tabla Palabras Reservadas");
+        bntTablaPalReserv.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                bntTablaPalReservActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem1);
+        jMenu3.add(bntTablaPalReserv);
+
+        btnTablaIdentificadores.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        btnTablaIdentificadores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/id.png"))); // NOI18N
+        btnTablaIdentificadores.setText("Tabla de Identificadores");
+        btnTablaIdentificadores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTablaIdentificadoresActionPerformed(evt);
+            }
+        });
+        jMenu3.add(btnTablaIdentificadores);
 
         jMenuBar1.add(jMenu3);
 
@@ -258,6 +278,7 @@ public class Compilador extends javax.swing.JFrame {
         DefaultTableModel m = (DefaultTableModel) tbl_simb.getModel();
         lista_token.clear();
         lista_errores.clear();
+        lista_identificadores.clear();
         txt_consola.setText("");
         if(m.getRowCount()>0){
             int p = m.getRowCount()-1, t = m.getRowCount();
@@ -268,7 +289,7 @@ public class Compilador extends javax.swing.JFrame {
         }
         
         //agregar todo a la tabla        
-        new AnalizadorLexico(lista_token, lista_errores).analizar(ta_Codigo.getText());
+        new AnalizadorLexico(lista_token, lista_errores, lista_identificadores).analizar(ta_Codigo.getText());
         
         for (int i = 0; i < lista_errores.size(); i++) {
             txt_consola.setText(txt_consola.getText() + "\n" + lista_errores.get(i).toStringErr());
@@ -277,7 +298,7 @@ public class Compilador extends javax.swing.JFrame {
         for(int i = 0; i < lista_token.size(); i++){
             m.addRow(new Object[]{lista_token.get(i).getFila(), lista_token.get(i).getLexema(), lista_token.get(i).getTipo()} );
         }
-
+        
     }//GEN-LAST:event_btnAnalizadorLexicoActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
@@ -297,10 +318,16 @@ public class Compilador extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void bntTablaPalReservActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntTablaPalReservActionPerformed
         TablasPalReservada TPR = new TablasPalReservada();
         TPR.setVisible(true);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_bntTablaPalReservActionPerformed
+
+    private void btnTablaIdentificadoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTablaIdentificadoresActionPerformed
+        tablaIdentificadores TID = new tablaIdentificadores();
+        
+        TID.setVisible(true);
+    }//GEN-LAST:event_btnTablaIdentificadoresActionPerformed
 
     /**
      * @param args the command line arguments
@@ -341,11 +368,13 @@ public class Compilador extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem bntTablaPalReserv;
     private javax.swing.JMenuItem btnAbrir;
     private javax.swing.JMenuItem btnAnalizadorLexico;
     private javax.swing.JMenu btnArchivo;
     private javax.swing.JMenu btnEjecutar;
     private javax.swing.JMenuItem btnGuardar;
+    private javax.swing.JMenuItem btnTablaIdentificadores;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -355,7 +384,6 @@ public class Compilador extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuBar jMenuBar2;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
